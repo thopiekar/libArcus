@@ -24,21 +24,20 @@ if(APPLE)
     set(CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
-find_package(PythonInterp 3.4.0 REQUIRED)
-find_package(PythonLibs 3.4.0 REQUIRED)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
-get_filename_component(PYTHON_BINARY_PATH ${PYTHON_EXECUTABLE} DIRECTORY)
+get_filename_component(PYTHON_BINARY_PATH ${Python3_EXECUTABLE} DIRECTORY)
 
 find_program(SIP_BINARY_PATH sip
-    HINTS ${CMAKE_INSTALL_PREFIX}/bin ${PYTHON_BINARY_PATH} ${PYTHON_BINARY_PATH}/site-packages/PyQt5
+    HINTS ${CMAKE_INSTALL_PREFIX}/bin ${PYTHON_BINARY_PATH} ${Python3_SITELIB}/PyQt5
 )
 
 find_path(SIP_INCLUDE_DIR sip.h
-    HINTS ${CMAKE_INSTALL_PREFIX}/include ${PYTHON_INCLUDE_DIRS} ${PYTHON_BINARY_PATH}/site-packages/PyQt5
+    HINTS ${CMAKE_INSTALL_PREFIX}/include ${Python3_INCLUDE_DIRS} ${Python3_SITELIB}/PyQt5
 )
 
 execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "import sip; print(sip.SIP_VERSION_STR)"
+    COMMAND ${Python3_EXECUTABLE} -c "import sip; print(sip.SIP_VERSION_STR)"
     RESULT_VARIABLE _process_status
     OUTPUT_VARIABLE _process_output
     OUTPUT_STRIP_TRAILING_WHITESPACE
